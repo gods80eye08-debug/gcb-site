@@ -23,12 +23,12 @@ DB_PORT=3306
 PORT=3000
 ```
 
-## Example for cloud (PlanetScale / Aiven / Render)
+## Example for cloud (Aiven / Render)
 ```env
-DB_HOST=us-east.connect.psdb.cloud
-DB_USER=xxxxxxxx
+DB_HOST=mysql-xxxxxxxxx.aivencloud.com
+DB_USER=avnadmin
 DB_PASSWORD=xxxxxxxx
-DB_NAME=gcb_site
+DB_NAME=defaultdb
 DB_PORT=3306
 DB_SSL=true
 PORT=10000

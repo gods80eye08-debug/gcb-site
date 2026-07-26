@@ -16,8 +16,8 @@ async function connectDB() {
 
   const port = DB_PORT ? Number(DB_PORT) : 3306;
 
-  // Determine SSL config: cloud providers (PlanetScale, Aiven, etc.) require SSL
-  // For PlanetScale, we use rejectUnauthorized: false for compatibility
+  // Determine SSL config: cloud providers (Aiven, PlanetScale, etc.) require SSL
+  // Use rejectUnauthorized: false for compatibility with cloud providers
   const sslConfig = DB_SSL === 'true' || DB_SSL === '1'
     ? { rejectUnauthorized: false }
     : undefined;

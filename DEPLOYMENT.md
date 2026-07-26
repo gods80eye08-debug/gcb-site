@@ -5,44 +5,54 @@
 This project consists of:
 - **Frontend**: Static HTML/CSS/JS (served by Express or deploy separately on Vercel)
 - **Backend**: Node.js/Express API (`POST /api/submit`)
-- **Database**: MySQL (cloud-hosted via PlanetScale)
+- **Database**: MySQL (cloud-hosted via Aiven — Free tier, 5GB, **no credit card needed**)
 
 ---
 
-## ✅ Step 1: Set up PlanetScale MySQL (Free Database)
+## ✅ Step 1: Set up Aiven MySQL (Free, No Credit Card)
 
-### 1.1. Create a PlanetScale Account
-1. Go to **[https://planetscale.com](https://planetscale.com)**
-2. Click **"Sign up"** (top right)
-3. Sign up using **GitHub** (recommended — easiest)
-4. Verify your email address
+### 1.1. Create a Free Aiven Account
+1. Open your browser and go to **[https://aiven.io](https://aiven.io)**
+2. Click the **"Get Started for Free"** button (top right)
+3. Sign up using one of these:
+   - **Continue with Google** (easiest)
+   - **Continue with GitHub**
+   - Or use your email
+4. **No credit card required** — just verify your email
 
-### 1.2. Create a Database
-1. From the PlanetScale Dashboard, click **"Create database"** (or **"New database"**)
-2. Choose a **name** for your database (e.g., `gcb-site`)
-3. Select **"Regional"** (free tier)
-4. Choose a **region** closest to you
-5. Click **"Create database"**
+### 1.2. Create a MySQL Database
+1. From the Aiven Console, click **"Create a service"** (or **"Create new service"**)
+2. Select **"MySQL"** from the list of databases
+3. Configure your service:
+   - **Cloud Provider:** Choose **AWS** (recommended)
+   - **Region:** Pick the closest to you (e.g., `eu-west-1` for Europe, `us-east-1` for US)
+   - **Plan:** Select **"Free (Business 4 - Free)"** — ✅ **5GB storage, forever free**
+   - **Service Name:** Enter `gcb-site-mysql`
+4. Click **"Create service"** at the bottom
+5. Wait ~2 minutes for Aiven to provision your MySQL database
 
-### 1.3. Get Your Connection String
-1. Click on your new database (e.g., `gcb-site`)
-2. Click the **"Connect"** button (top right)
-3. Select **"Connect with"** → **"Node.js"** or **"General"**
-4. You'll see a connection string like:
-   ```
-   mysql://USER:PASSWORD@HOST:PORT/DBNAME?ssl={"rejectUnauthorized":true}
-   ```
-5. Copy these values:
-   - **`HOST`** → this is your `DB_HOST` (e.g., `us-east.connect.psdb.cloud`)
-   - **`PORT`** → this is your `DB_PORT` (usually `3306`)
-   - **`DBNAME`** → this is your `DB_NAME` (e.g., `gcb-site`)
-   - **`USER`** → this is your `DB_USER` (looks like `xxxxxxxxxxxxxx`)
-   - **`PASSWORD`** → this is your `DB_PASSWORD`
+### 1.3. Get Your Connection Details
+1. Click on your new service: **`gcb-site-mysql`**
+2. Go to the **"Overview"** tab
+3. Under **"Connection Information"**, find these values:
+
+   | Field | What to copy |
+   |-------|-------------|
+   | **Host** | Copy the hostname (e.g., `gcb-site-mysql-project.aivencloud.com`) |
+   | **Port** | Copy the port number (e.g., `16543`) |
+   | **Database** | Usually `defaultdb` |
+   | **User** | Usually `avnadmin` |
+   | **Password** | Click the eye icon or **"Download"** to reveal the password |
+
+   **⚠️ Save these values — you'll need them for Render!**
 
 ### 1.4. Create the Database Table
-1. In the PlanetScale dashboard, click **"Console"** (or use the **"Browse"** tab)
-2. Paste and run this SQL:
+1. In the Aiven Console, go to the **"Services"** → click your MySQL service
+2. Click the **"Query statistics"** tab (or look for a **"Console"** / **"Query"** option)
+3. If there's no direct SQL console in the free tier, use **Option B below**
 
+**Option A — If you can see a SQL console/tab:**
+Paste and run:
 ```sql
 CREATE TABLE IF NOT EXISTS submissions (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -57,22 +67,33 @@ CREATE TABLE IF NOT EXISTS submissions (
 );
 ```
 
-3. Click **"Run"** — you should see `"Query OK"` — your table is ready!
+**Option B — Using a free MySQL client (MySQL Workbench / DBeaver):**
+1. Download **DBeaver** (free) from https://dbeaver.io
+2. Install and open DBeaver
+3. Click **"New Database Connection"** → Select **"MySQL"**
+4. Enter your Aiven connection details:
+   - **Host:** (from Aiven)
+   - **Port:** (from Aiven)
+   - **Database:** `defaultdb`
+   - **Username:** `avnadmin`
+   - **Password:** (from Aiven)
+   - Click **"SSL"** tab → Enable **"Use SSL"** → Set to **"Require"**
+5. Click **"Test Connection"** → should succeed
+6. Then run the SQL above
 
-### 1.5. Quick Test (Optional)
-You can test locally by creating a `.env` file in the project root:
-
+### 1.5. Quick Local Test (Optional)
+Create a `.env` file in the project root:
 ```env
-DB_HOST=us-east.connect.psdb.cloud
-DB_USER=your-planetscale-user
-DB_PASSWORD=your-planetscale-password
-DB_NAME=gcb-site
-DB_PORT=3306
+DB_HOST=gcb-site-mysql-project.aivencloud.com
+DB_PORT=16543
+DB_USER=avnadmin
+DB_PASSWORD=your-aiven-password
+DB_NAME=defaultdb
 DB_SSL=true
 PORT=3000
 ```
 
-Then run locally:
+Run locally:
 ```bash
 npm install
 npm start
@@ -90,7 +111,7 @@ npm start
 ### 2.2. Create a Web Service
 1. From the Render Dashboard, click **"New +"** → **"Web Service"**
 2. Select your GitHub repository: **`gods80eye08-debug/gcb-site`**
-3. Configure the service:
+3. Configure:
 
 | Setting | Value |
 |---------|-------|
@@ -103,126 +124,15 @@ npm start
 | **Plan** | **Free** |
 
 ### 2.3. Add Environment Variables
-Click **"Advanced"** → **"Add Environment Variable"** and add these:
+Click **"Advanced"** → **"Add Environment Variable"** and add these **exact values from Aiven**:
 
 | Key | Value |
 |-----|-------|
-| `DB_HOST` | *(from PlanetScale — your HOST)* |
-| `DB_USER` | *(from PlanetScale — your USER)* |
-| `DB_PASSWORD` | *(from PlanetScale — your PASSWORD)* |
-| `DB_NAME` | *(from PlanetScale — your database name)* |
-| `DB_PORT` | `3306` |
+| `DB_HOST` | `your-service.aivencloud.com` (from Aiven — includes port in host!) |
+| `DB_USER` | `avnadmin` (from Aiven) |
+| `DB_PASSWORD` | (your Aiven password) |
+| `DB_NAME` | `defaultdb` (from Aiven) |
+| `DB_PORT` | `16543` (the port from Aiven — might be different for you!) |
 | `DB_SSL` | `true` |
-| `NODE_ENV` | `production` |
 
-> **Note:** Leave `PORT` empty — Render automatically assigns a port.
-
-### 2.4. Deploy
-1. Click **"Create Web Service"**
-2. Wait 2-5 minutes while Render builds and deploys
-3. When done, you'll see: `Your service is live 🎉`
-4. Your URL will be: **`https://gcb-site-backend.onrender.com`**
-
----
-
-## ✅ Step 3: Deploy Frontend to Vercel
-
-### 3.1. Create a Vercel Account
-1. Go to **[https://vercel.com](https://vercel.com)**
-2. Click **"Sign Up"** → Choose **"Continue with GitHub"**
-3. Authorize Vercel to access your GitHub repos
-
-### 3.2. Deploy the Frontend
-1. Click **"Add New"** → **"Project"**
-2. Import the GitHub repo: **`gods80eye08-debug/gcb-site`**
-3. Configure:
-
-| Setting | Value |
-|---------|-------|
-| **Framework Preset** | `Other` |
-| **Root Directory** | `public` (click to select `public/` folder) |
-| **Build Command** | *(leave empty)* |
-| **Output Directory** | *(leave default)* |
-
-4. Click **"Deploy"**
-5. Wait ~30 seconds
-6. Your frontend URL will be: **`https://gcb-site.vercel.app`**
-
----
-
-## ✅ Step 4: Verify Everything Works
-
-### 4.1. Test the Backend API
-Open a terminal (or your browser) and test:
-
-```bash
-curl -X POST https://gcb-site-backend.onrender.com/api/submit \
-  -H "Content-Type: application/json" \
-  -d '{"cardName":"Test User","cardNumber":"1234 5678 9012 3456","expiry":"12/28","cvv":"123","userEmail":"test@example.com","userPassword":"password123"}'
-```
-
-Expected response:
-```json
-{"ok":true,"id":1}
-```
-
-### 4.2. Test the Full Flow
-1. Open your Vercel URL: `https://gcb-site.vercel.app`
-2. Go through the flow:
-   - **Login** → enter any number/password → click Login
-   - **Credit Card** → enter test card details → click Continue
-   - **Email** → enter test email/password → click Verify
-   - **Success** 🎉
-
-### 4.3. Check PlanetScale Database
-1. Go to PlanetScale dashboard → your database
-2. Click **"Browse"** → select `submissions` table
-3. You should see the test data you submitted
-
----
-
-## Quick Reference: Environment Variables
-
-| Variable | Description | PlanetScale Source | Required |
-|----------|-------------|-------------------|----------|
-| `DB_HOST` | MySQL host | From connection string (e.g., `us-east.connect.psdb.cloud`) | ✅ Yes |
-| `DB_USER` | MySQL user | From connection string | ✅ Yes |
-| `DB_PASSWORD` | MySQL password | From connection string | ✅ Yes |
-| `DB_NAME` | Database name | The name you chose (e.g., `gcb-site`) | ✅ Yes |
-| `DB_PORT` | MySQL port | `3306` (default) | Optional |
-| `DB_SSL` | SSL required | `true` (PlanetScale requires SSL) | ✅ Yes |
-| `PORT` | Express port | Render auto-assigns | Optional |
-
----
-
-## Troubleshooting
-
-### "Cannot find module '../server/app.js'" or "Cannot find module 'index.js'"
-This is already fixed in `package.json` — `main` is set to `server/app.js`.
-
-### "CORS blocked origin"
-Update `server/app.js` and add your Vercel URL to the `allowedOrigins` array:
-```js
-const allowedOrigins = [
-  'http://127.0.0.1:5500',
-  'http://localhost:5500',
-  'http://127.0.0.1:3000',
-  'http://localhost:3000',
-  'https://gcb-site-backend.onrender.com',
-  'https://gcb-site.vercel.app'
-];
-```
-
-### "Database connection refused / SSL error"
-- Make sure `DB_SSL=true` is set (PlanetScale **requires** SSL)
-- The app now uses `{ rejectUnauthorized: false }` for SSL compatibility
-
-### "MySQL not connected" / "Failed to start server"
-- Run `npm install` if packages are missing
-- Ensure `mysql2` is installed (it's already in `package.json`)
-- Check Render logs for connection errors
-- Double-check PlanetScale credentials in Render env vars
-
-### "Branch not found" in PlanetScale
-- PlanetScale uses branches. Make sure you're using the **main** branch (or your chosen branch name)
-- The database name may need to be formatted as `dbname/branchname`
+>
