@@ -25,4 +25,5 @@
 - [x] Updated `server/README.env.md` — corrected docs from MongoDB to MySQL env vars with local + cloud examples
 - [x] Created `.gitignore` — excludes `node_modules/`, `.env`, logs
 - [x] Created `DEPLOYMENT.md` — step-by-step guide for GitHub + Render + Vercel deployment
+- [x] **Pushed to GitHub** — `https://github.com/gods80eye08-debug/gcb-site` (34 files, branch: `main`)
 
