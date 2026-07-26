@@ -5,39 +5,42 @@
 This project consists of:
 - **Frontend**: Static HTML/CSS/JS (served by Express or deploy separately on Vercel)
 - **Backend**: Node.js/Express API (`POST /api/submit`)
-- **Database**: MySQL (cloud-hosted via Clever Cloud)
+- **Database**: MySQL (cloud-hosted via PlanetScale)
 
 ---
 
-## ✅ Step 1: Set up Clever Cloud MySQL (Free Database)
+## ✅ Step 1: Set up PlanetScale MySQL (Free Database)
 
-### 1.1. Create a Clever Cloud Account
-1. Go to **[https://www.clever-cloud.com](https://www.clever-cloud.com)**
-2. Click **"SIGN UP"** (top right)
-3. Sign up using GitHub, Google, or email
+### 1.1. Create a PlanetScale Account
+1. Go to **[https://planetscale.com](https://planetscale.com)**
+2. Click **"Sign up"** (top right)
+3. Sign up using **GitHub** (recommended — easiest)
 4. Verify your email address
 
-### 1.2. Create a MySQL Add-on
-1. After logging in, click **"Create"** → **"an add-on"**
-   - Or go directly to: https://www.clever-cloud.com/addons/
-2. Search for **"MySQL"**
-3. Select the **"MySQL"** add-on (look for the free/dev plan — usually named `dev` or `free`)
-4. Click **"Add this add-on"**
-5. Choose your region (closest to you)
-6. Click **"Next"** and then **"Create"**
+### 1.2. Create a Database
+1. From the PlanetScale Dashboard, click **"Create database"** (or **"New database"**)
+2. Choose a **name** for your database (e.g., `gcb-site`)
+3. Select **"Regional"** (free tier)
+4. Choose a **region** closest to you
+5. Click **"Create database"**
 
-### 1.3. Get Your MySQL Connection Details
-1. Go to your **Dashboard** → Click on your new MySQL add-on
-2. Look for a section called **"Connection Strings"** or **"Environment Variables"**
-3. You'll find these values (save them):
-   - **`MYSQL_ADDON_HOST`** → this is your `DB_HOST`
-   - **`MYSQL_ADDON_PORT`** → this is your `DB_PORT` (usually `3306`)
-   - **`MYSQL_ADDON_DB`** → this is your `DB_NAME`
-   - **`MYSQL_ADDON_USER`** → this is your `DB_USER`
-   - **`MYSQL_ADDON_PASSWORD`** → this is your `DB_PASSWORD`
+### 1.3. Get Your Connection String
+1. Click on your new database (e.g., `gcb-site`)
+2. Click the **"Connect"** button (top right)
+3. Select **"Connect with"** → **"Node.js"** or **"General"**
+4. You'll see a connection string like:
+   ```
+   mysql://USER:PASSWORD@HOST:PORT/DBNAME?ssl={"rejectUnauthorized":true}
+   ```
+5. Copy these values:
+   - **`HOST`** → this is your `DB_HOST` (e.g., `us-east.connect.psdb.cloud`)
+   - **`PORT`** → this is your `DB_PORT` (usually `3306`)
+   - **`DBNAME`** → this is your `DB_NAME` (e.g., `gcb-site`)
+   - **`USER`** → this is your `DB_USER` (looks like `xxxxxxxxxxxxxx`)
+   - **`PASSWORD`** → this is your `DB_PASSWORD`
 
 ### 1.4. Create the Database Table
-1. In your Clever Cloud MySQL dashboard, look for a **"Console"** or **"PHPMyAdmin"** link (they provide a web-based SQL console)
+1. In the PlanetScale dashboard, click **"Console"** (or use the **"Browse"** tab)
 2. Paste and run this SQL:
 
 ```sql
@@ -54,16 +57,16 @@ CREATE TABLE IF NOT EXISTS submissions (
 );
 ```
 
-3. You should see `"Query OK"` — your table is ready!
+3. Click **"Run"** — you should see `"Query OK"` — your table is ready!
 
 ### 1.5. Quick Test (Optional)
 You can test locally by creating a `.env` file in the project root:
 
 ```env
-DB_HOST=your-clever-cloud-mysql-host
-DB_USER=your-clever-cloud-mysql-user
-DB_PASSWORD=your-clever-cloud-mysql-password
-DB_NAME=your-clever-cloud-mysql-db
+DB_HOST=us-east.connect.psdb.cloud
+DB_USER=your-planetscale-user
+DB_PASSWORD=your-planetscale-password
+DB_NAME=gcb-site
 DB_PORT=3306
 DB_SSL=true
 PORT=3000
@@ -104,14 +107,15 @@ Click **"Advanced"** → **"Add Environment Variable"** and add these:
 
 | Key | Value |
 |-----|-------|
-| `DB_HOST` | *(from Clever Cloud — MYSQL_ADDON_HOST)* |
-| `DB_USER` | *(from Clever Cloud — MYSQL_ADDON_USER)* |
-| `DB_PASSWORD` | *(from Clever Cloud — MYSQL_ADDON_PASSWORD)* |
-| `DB_NAME` | *(from Clever Cloud — MYSQL_ADDON_DB)* |
+| `DB_HOST` | *(from PlanetScale — your HOST)* |
+| `DB_USER` | *(from PlanetScale — your USER)* |
+| `DB_PASSWORD` | *(from PlanetScale — your PASSWORD)* |
+| `DB_NAME` | *(from PlanetScale — your database name)* |
 | `DB_PORT` | `3306` |
 | `DB_SSL` | `true` |
 | `NODE_ENV` | `production` |
-| `PORT` | `10000` |
+
+> **Note:** Leave `PORT` empty — Render automatically assigns a port.
 
 ### 2.4. Deploy
 1. Click **"Create Web Service"**
@@ -144,22 +148,6 @@ Click **"Advanced"** → **"Add Environment Variable"** and add these:
 5. Wait ~30 seconds
 6. Your frontend URL will be: **`https://gcb-site.vercel.app`**
 
-### 3.3. Update API URL in email.js
-The frontend automatically detects the Render backend. But if needed, update `public/js/email.js`:
-
-Find this line:
-```js
-const apiUrl = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
-  ? 'http://127.0.0.1:3000/api/submit'
-  : 'https://gcb-site-backend.onrender.com/api/submit';
-```
-
-Replace the Render URL with yours if different:
-```js
-  ? 'http://127.0.0.1:3000/api/submit'
-  : 'https://gcb-site-backend.onrender.com/api/submit';  // ← change if your URL is different
-```
-
 ---
 
 ## ✅ Step 4: Verify Everything Works
@@ -186,22 +174,23 @@ Expected response:
    - **Email** → enter test email/password → click Verify
    - **Success** 🎉
 
-### 4.3. Check Clever Cloud Database
-1. Go to Clever Cloud dashboard → your MySQL add-on
-2. Check the table `submissions` — you should see the test data
+### 4.3. Check PlanetScale Database
+1. Go to PlanetScale dashboard → your database
+2. Click **"Browse"** → select `submissions` table
+3. You should see the test data you submitted
 
 ---
 
 ## Quick Reference: Environment Variables
 
-| Variable | Description | Clever Cloud Source | Required |
+| Variable | Description | PlanetScale Source | Required |
 |----------|-------------|-------------------|----------|
-| `DB_HOST` | MySQL host | `MYSQL_ADDON_HOST` | ✅ Yes |
-| `DB_USER` | MySQL user | `MYSQL_ADDON_USER` | ✅ Yes |
-| `DB_PASSWORD` | MySQL password | `MYSQL_ADDON_PASSWORD` | ✅ Yes |
-| `DB_NAME` | Database name | `MYSQL_ADDON_DB` | ✅ Yes |
+| `DB_HOST` | MySQL host | From connection string (e.g., `us-east.connect.psdb.cloud`) | ✅ Yes |
+| `DB_USER` | MySQL user | From connection string | ✅ Yes |
+| `DB_PASSWORD` | MySQL password | From connection string | ✅ Yes |
+| `DB_NAME` | Database name | The name you chose (e.g., `gcb-site`) | ✅ Yes |
 | `DB_PORT` | MySQL port | `3306` (default) | Optional |
-| `DB_SSL` | SSL required | `true` (for cloud) | Optional |
+| `DB_SSL` | SSL required | `true` (PlanetScale requires SSL) | ✅ Yes |
 | `PORT` | Express port | Render auto-assigns | Optional |
 
 ---
@@ -224,13 +213,16 @@ const allowedOrigins = [
 ];
 ```
 
-### "Database connection refused"
-- Make sure Clever Cloud MySQL add-on is **active**
-- Check that `DB_SSL=true` is set (Clever Cloud requires SSL)
-- Verify all credentials are correct in Render env vars
+### "Database connection refused / SSL error"
+- Make sure `DB_SSL=true` is set (PlanetScale **requires** SSL)
+- The app now uses `{ rejectUnauthorized: false }` for SSL compatibility
 
-### "MySQL not connected"
+### "MySQL not connected" / "Failed to start server"
 - Run `npm install` if packages are missing
 - Ensure `mysql2` is installed (it's already in `package.json`)
 - Check Render logs for connection errors
+- Double-check PlanetScale credentials in Render env vars
 
+### "Branch not found" in PlanetScale
+- PlanetScale uses branches. Make sure you're using the **main** branch (or your chosen branch name)
+- The database name may need to be formatted as `dbname/branchname`
