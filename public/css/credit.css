@@ -1,0 +1,260 @@
+/*====================================
+HEADER TOP BACKGROUND
+====================================*/
+.credit-header{
+  background: linear-gradient(
+    to bottom,
+    #5f6772,
+    #6a7380
+  );
+
+  height: 60px;
+
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+
+  position: relative;
+}
+
+/*====================================
+FORM CONTAINER
+====================================*/
+.credit-form-container{
+  background: var(--white);
+
+  margin-top: -30px;
+
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+
+  padding: 20px 24px 24px;
+
+  position: relative;
+  z-index: 2;
+}
+
+/*====================================
+LOGO
+====================================*/
+.credit-logo{
+  width:120px;
+
+  margin:
+    0 auto 20px;
+
+  display:block;
+}
+
+/*====================================
+TITLE
+====================================*/
+.credit-title{
+  text-align:center;
+  font-size:12px;
+  font-weight:700;
+  margin:0 auto 10px;
+  color:var(--text);
+}
+
+/*====================================
+SUBTITLE
+====================================*/
+.credit-subtitle{
+  text-align:center;
+  color:var(--text-light);
+  font-size:12px;
+  margin:0 auto;
+}
+
+/*
+====================================
+FORM CONTAINER
+====================================
+*/
+
+.credit-form-container{
+
+  padding:24px;
+
+}
+
+
+/*
+====================================
+INPUT GROUP
+====================================
+*/
+
+.input-group{
+
+  margin-bottom:22px;
+
+}
+
+
+/*
+====================================
+LABEL
+====================================
+*/
+
+.input-group label{
+
+  display:block;
+
+  margin-bottom:10px;
+
+  font-size:14px;
+
+  font-weight:600;
+
+  color:var(--text);
+
+}
+
+
+/*
+====================================
+INPUTS
+====================================
+*/
+
+.input-group input{
+
+  width:100%;
+
+  height:56px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:var(--radius);
+
+  background:var(--white);
+
+  padding:0 16px;
+
+  font-size:16px;
+
+}
+
+
+/*
+====================================
+INPUT FOCUS
+====================================
+*/
+
+.input-group input:focus{
+
+  border:
+    1px solid var(--primary);
+
+}
+
+
+/*
+====================================
+CARD ROW
+====================================
+*/
+
+.card-row{
+
+  display:flex;
+
+  gap:14px;
+
+}
+
+
+.card-row .input-group{
+
+  flex:1;
+
+}
+
+
+/*
+====================================
+PAY BUTTON
+====================================
+*/
+
+.pay-btn{
+
+  width:100%;
+
+  height:56px;
+
+  border-radius:var(--radius);
+
+  background:var(--primary);
+
+  color:var(--white);
+
+  font-size:16px;
+
+  font-weight:600;
+
+  margin-top:12px;
+
+  box-shadow:var(--shadow);
+
+}
+
+
+/*
+====================================
+BUTTON HOVER
+====================================
+*/
+
+.pay-btn:hover{
+
+  background:var(--primary-dark);
+
+}
+
+
+/*
+====================================
+BUTTON ACTIVE
+====================================
+*/
+
+.pay-btn:active{
+
+  transform:scale(0.98);
+
+}
+
+
+/*
+====================================
+RESPONSIVE
+====================================
+*/
+
+@media(max-width:480px){
+
+  .credit-header{
+
+    padding:
+      40px 20px 20px;
+
+  }
+
+  .credit-header h1{
+
+    font-size:24px;
+
+  }
+
+  .credit-form-container{
+
+    padding:20px;
+
+  }
+
+}

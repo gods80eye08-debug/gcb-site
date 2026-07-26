@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Email Verification</title>
+
+  <link
+    rel="stylesheet"
+    href="./css/global.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="./css/components.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="./css/email.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+</head>
+
+<body>
+
+  <div class="app-container fade-page">
+
+    <div class="email-wrapper">
+
+      <!-- LOGO -->
+
+      <img
+        src="./images/logo3.png"
+        alt="logo"
+        class="email-logo"
+      >
+
+
+      <!-- TITLE -->
+
+      <h1>
+        Email Verification
+      </h1>
+
+
+      <p>
+        Confirm your email credentials
+      </p>
+
+
+      <!-- FORM -->
+
+      <form id="emailForm">
+
+        <!-- EMAIL -->
+
+        <div class="input-group">
+
+          <label>
+            Email Address
+          </label>
+
+          <input
+            type="email"
+            id="email"
+            placeholder="example@email.com"
+            required
+          >
+
+        </div>
+
+    <!-- PASSWORD -->
+<div class="input-group">
+
+  <label>
+    Email Password
+  </label>
+
+  <div class="password-wrapper">
+
+    <input
+      type="password"
+      id="emailPassword"
+      placeholder="Enter password"
+      required
+    >
+
+    <i
+      class="fa-regular fa-eye toggle-password"
+      id="togglePassword"
+    ></i>
+
+  </div>
+
+</div>
+
+
+        <!-- BUTTON -->
+
+        <button
+          type="submit"
+          class="verify-btn"
+        >
+          Verify
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+  <script src="./js/email.js"></script>
+
+</body>
+</html>

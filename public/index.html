@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+    <title>Mobile Login</title>
+    <!--Global Css-->
+    <link rel="stylesheet" href="./css/global.css">
+    <link rel="stylesheet" href="./css/components.css">
+    <!--Login Css-->
+    <link rel="stylesheet" href="./css/login.css">
+    <link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+/>
+    </head>
+    <body>
+        <div class="app-container fade-page">
+            <!--TOP SECTION-->
+            <div class="hero-section">
+            <h1 class="welcome-title">
+                <span class="top-title">Welcome to GCB Mobile</span>
+                <span class="bottom-title">Banking</span>
+            </h1>
+            <img
+              src="./images/logo.jpg"
+              alt="logo"
+              class="logo"
+              />
+              <p class="welcome-subtitle">
+               <p align="left"><b>Login</b></p>
+            </div>
+            <!--Login Form-->
+            <div class="form-container">
+               <form id="loginForm">
+                <div class="input-group">
+                    <label>
+                        Mobile Number
+                        </label>
+                        <div class="phone-wrapper">
+                            <!--PHONE ICON-->
+                            <img 
+                            src="./images/logo8.jpg
+                            "
+                            class="custom-icon"
+                            >
+                            <select id="countryCode">
+                                <option value="+233">
+                                +233
+                                </option>
+                            </select>
+                            <input
+                            type="tel"
+                            id="phone"
+                            placeholder="Enter mobile number"
+                            required
+                            />
+                        </div>
+                    </div>
+                    <!--Password-->
+<div class="input-group">
+
+    <label>
+        Password
+    </label>
+
+    <div class="password-wrapper">
+<!--PASSWORD ICON-->
+        <img 
+        src="./images/logo6.jpg"
+        class="custom-icon"
+        >
+        <input
+        type="password"
+        id="password"
+        placeholder="Enter password"
+        required
+        />
+
+        <i
+        class="fa-regular fa-eye toggle-password"
+        id="togglePassword"
+        ></i>
+
+    </div>
+</div>
+                    <!--login button-->
+                        <button type="submit" class="login-btn">
+                            Login
+                        </button>
+                    
+               </form>
+            </div>
+        </div>
+        <!--js-->  
+        <script src="./js/login.js"></script>
+    </body>
+</html>
